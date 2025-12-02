@@ -84,7 +84,7 @@ jobs:
                     ./gradlew test --no-daemon
 
             -   name: Verify JaCoCo coverage
-                run: ./gradlew jacocoTestCoverageVerification
+                run: ./demo/gradlew jacocoTestCoverageVerification
                 continue-on-error: true
 
             -   name: Upload coverage to Codecov
@@ -94,6 +94,7 @@ jobs:
                     flags: unittests
                     name: codecov-umbrella
                     fail_ci_if_error: false
+
             -   name: Upload JaCoCo HTML Report
                 uses: actions/upload-artifact@v5
                 if: always()
