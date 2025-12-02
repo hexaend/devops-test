@@ -17,4 +17,8 @@ public class DemoServcie {
     public String delete(String id) {
         return String.format("Deleted item with id: %s", id);
     }
+
+    public String status() {
+        return "Service is running";
+    }
 }

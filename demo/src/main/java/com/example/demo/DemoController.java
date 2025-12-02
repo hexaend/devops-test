@@ -25,6 +25,11 @@ public class DemoController {
         return demoServcie.delete(id);
     }
 
+    @GetMapping("/status")
+    public String status() {
+        return demoServcie.status();
+    }
+
 
 
 }
