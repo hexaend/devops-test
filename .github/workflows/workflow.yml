@@ -54,8 +54,10 @@ jobs:
                     cd ./demo
                     ./gradlew --no-daemon bootBuildImage \
                         --imageName=${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest \
-                        --publishImage
 
+            -   name: Push Docker image to registry
+                run: |
+                    docker push ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
     tests:
         runs-on: ubuntu-latest
 
@@ -102,5 +104,5 @@ jobs:
                 if: always()
                 with:
                     name: jacoco-report
-                    path: /demo/build/reports/jacoco/test/html/index.html
+                    path: demo/build/reports/jacoco/test/html/
 #    TODO: Add security scan + production deployment
