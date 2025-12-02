@@ -10,7 +10,8 @@ env:
     IMAGE_NAME: my-docker-image
 
 jobs:
-    docker:
+    build:
+        name: Build and Push Docker Image
         runs-on: ubuntu-latest
         permissions:
             contents: read
@@ -54,3 +55,49 @@ jobs:
                     ./gradlew --no-daemon bootBuildImage \
                         --imageName=${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest \
                         --publishImage
+
+    tests:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   uses: actions/checkout@v6
+
+            -   name: Set up Java
+                uses: actions/setup-java@v5
+                with:
+                    distribution: 'temurin'
+                    java-version: '21'
+
+            -   name: Cache Gradle packages
+                uses: actions/cache@v4
+                with:
+                    path: ~/.gradle/caches
+                    key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                    restore-keys: ${{ runner.os }}-gradle
+
+            -   name: Make gradlew executable
+                run: chmod +x ./demo/gradlew
+
+            -   name: Run tests with Gradle
+                run: |
+                    cd ./demo
+                    ./gradlew test --no-daemon
+
+            -   name: Verify JaCoCo coverage
+                run: ./gradlew jacocoTestCoverageVerification
+                continue-on-error: true
+
+            -   name: Upload coverage to Codecov
+                uses: codecov/codecov-action@v5
+                with:
+                    files: ./demo/build/reports/jacoco/test/jacocoTestReport.xml
+                    flags: unittests
+                    name: codecov-umbrella
+                    fail_ci_if_error: false
+            -   name: Upload JaCoCo HTML Report
+                uses: actions/upload-artifact@v5
+                if: always()
+                with:
+                    name: jacoco-report
+                    path: /demo/build/reports/jacoco/test/html/
+#    TODO: Add security scan + production deployment
