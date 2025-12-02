@@ -78,7 +78,7 @@ tasks.jacocoTestCoverageVerification {
 
         rule {
             element = "CLASS"
-            excludes = listOf("*Test")
+            excludes = listOf("*Test", "*Application")
 
             limit {
                 counter = "LINE"

@@ -86,21 +86,21 @@ jobs:
             -   name: Verify JaCoCo coverage
                 run: |
                     cd ./demo
-                    ./gradlew jacocoTestCoverageVerification
+                    ./gradlew jacocoTestCoverageVerification --no-daemon
                 continue-on-error: true
 
-            -   name: Upload coverage to Codecov
-                uses: codecov/codecov-action@v5
-                with:
-                    files: ./demo/build/reports/jacoco/test/jacocoTestReport.xml
-                    flags: unittests
-                    name: codecov-umbrella
-                    fail_ci_if_error: false
+#            -   name: Upload coverage to Codecov
+#                uses: codecov/codecov-action@v5
+#                with:
+#                    files: ./demo/build/reports/jacoco/test/jacocoTestReport.xml
+#                    flags: unittests
+#                    name: codecov-umbrella
+#                    fail_ci_if_error: false
 
             -   name: Upload JaCoCo HTML Report
                 uses: actions/upload-artifact@v5
                 if: always()
                 with:
                     name: jacoco-report
-                    path: /demo/build/reports/jacoco/test/html/
+                    path: /demo/build/reports/jacoco/test/html/index.html
 #    TODO: Add security scan + production deployment
