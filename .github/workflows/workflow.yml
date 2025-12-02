@@ -18,7 +18,7 @@ jobs:
             security-events: write
 
         steps:
-            -   uses: actions/checkout@v3
+            -   uses: actions/checkout@v6
 
             -   name: Set up Java
                 uses: actions/setup-java@v5
@@ -26,8 +26,11 @@ jobs:
                     distribution: 'temurin'
                     java-version: '21'
 
+            -   name: Setup Gradle
+                uses: gradle/actions/setup-gradle@v5
+
             -   name: Cache Gradle packages
-                uses: actions/cache@v3
+                uses: actions/cache@v4
                 with:
                     key: ~/.gradle/caches
                     path: $ {{runner.os}}-gradle-caches-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
