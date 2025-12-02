@@ -33,6 +33,9 @@ jobs:
                     path: $ {{runner.os}}-gradle-caches-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
                     restore-keys: ${{ runner.os }}-gradle
 
+            -   name: Make gradlew executable
+                run: chmod +x ./demo/gradlew
+
             -   name: Build with Gradle
                 run: ./demo/gradlew clean bootJar
 
