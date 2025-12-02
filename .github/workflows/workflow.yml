@@ -84,7 +84,9 @@ jobs:
                     ./gradlew test --no-daemon
 
             -   name: Verify JaCoCo coverage
-                run: ./demo/gradlew jacocoTestCoverageVerification
+                run: |
+                    cd ./demo
+                    ./gradlew jacocoTestCoverageVerification
                 continue-on-error: true
 
             -   name: Upload coverage to Codecov
